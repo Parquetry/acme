@@ -1,0 +1,269 @@
+:root {
+  --paper: #f3efe4;
+  --card: #fffdf7;
+  --ink: #241c16;
+  --muted: #6d6258;
+  --line: #ddd4c4;
+  --teal: #0f6e68;
+  --teal-dark: #0b524d;
+  --amber: #b45309;
+  --sky: #0369a1;
+  --danger: #9f1239;
+  --ok: #3f6212;
+  --shadow: 0 12px 32px rgba(36, 28, 22, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background:
+    radial-gradient(1200px 500px at 10% -10%, #efe4c8 0%, transparent 55%),
+    var(--paper);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+}
+
+a {
+  color: var(--teal-dark);
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.app-shell {
+  width: min(760px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 80px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.brand {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 1.7rem;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.brand span {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 400;
+}
+
+.nav {
+  display: flex;
+  gap: 8px;
+}
+
+.nav a,
+.ghost,
+.primary,
+.score {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.nav a[aria-current="page"],
+.primary {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: white;
+}
+
+.primary:disabled,
+.ghost:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: 22px;
+  margin-bottom: 18px;
+}
+
+.card h2,
+.card h3 {
+  font-family: "Fraunces", Georgia, serif;
+  margin: 0 0 8px;
+}
+
+.lede,
+.hint,
+.meta {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.scale {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 16px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+
+.item:first-of-type {
+  border-top: 0;
+}
+
+.item-label {
+  font-weight: 650;
+  margin-bottom: 4px;
+}
+
+.scores {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.score {
+  border-radius: 14px;
+  min-height: 48px;
+  font-weight: 650;
+}
+
+.score[aria-pressed="true"] {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: white;
+}
+
+.comment {
+  width: 100%;
+  min-height: 96px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px 14px;
+  background: #fffaf0;
+  resize: vertical;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.totals {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat {
+  padding: 16px;
+  border-radius: 18px;
+  background: #f7f1e4;
+}
+
+.stat strong {
+  display: block;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 1.8rem;
+}
+
+.stat.phq {
+  box-shadow: inset 3px 0 0 var(--amber);
+}
+
+.stat.gad {
+  box-shadow: inset 3px 0 0 var(--sky);
+}
+
+.crisis {
+  background: #fff1f2;
+  border-color: #fecdd3;
+  color: var(--danger);
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.chart-line {
+  fill: none;
+  stroke-width: 2.5;
+}
+
+.history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.history-list li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+
+.login {
+  max-width: 420px;
+  margin: 12vh auto 0;
+}
+
+.login input {
+  width: 100%;
+  margin: 16px 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+}
+
+.empty {
+  text-align: center;
+  padding: 28px 12px;
+}
+
+@media (max-width: 640px) {
+  .topbar,
+  .row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .scale {
+    grid-template-columns: 1fr;
+  }
+}
