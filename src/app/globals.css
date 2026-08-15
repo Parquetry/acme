@@ -25,7 +25,7 @@ body {
     radial-gradient(1200px 500px at 10% -10%, #efe4c8 0%, transparent 55%),
     var(--paper);
   color: var(--ink);
-  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-family: var(--font-sans), "Segoe UI", sans-serif;
 }
 
 a {
@@ -53,7 +53,7 @@ textarea {
 }
 
 .brand {
-  font-family: "Fraunces", Georgia, serif;
+  font-family: var(--font-serif), Georgia, serif;
   font-size: 1.7rem;
   line-height: 1.1;
   margin: 0;
@@ -63,7 +63,7 @@ textarea {
   display: block;
   margin-top: 6px;
   color: var(--muted);
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: var(--font-sans), sans-serif;
   font-size: 0.92rem;
   font-weight: 400;
 }
@@ -110,7 +110,7 @@ textarea {
 
 .card h2,
 .card h3 {
-  font-family: "Fraunces", Georgia, serif;
+  font-family: var(--font-serif), Georgia, serif;
   margin: 0 0 8px;
 }
 
@@ -195,7 +195,7 @@ textarea {
 
 .stat strong {
   display: block;
-  font-family: "Fraunces", Georgia, serif;
+  font-family: var(--font-serif), Georgia, serif;
   font-size: 1.8rem;
 }
 

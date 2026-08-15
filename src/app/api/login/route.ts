@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import { isValidPassword, passwordEnabled, SESSION_COOKIE, sessionToken } from "@/lib/auth";
 
+function cookieSecure(): boolean {
+  if (process.env.COOKIE_SECURE === "true") return true;
+  if (process.env.COOKIE_SECURE === "false") return false;
+  return (process.env.APP_URL || "").startsWith("https://");
+}
+
 export async function POST(request: Request) {
   if (!passwordEnabled()) {
     return NextResponse.json({ ok: true });
@@ -13,7 +19,7 @@ export async function POST(request: Request) {
   response.cookies.set(SESSION_COOKIE, await sessionToken(), {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: cookieSecure(),
     path: "/",
     maxAge: 60 * 60 * 24 * 90,
   });
