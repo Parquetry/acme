@@ -1,0 +1,38 @@
+name: Daily log reminder
+
+on:
+  schedule:
+    # 01:00 UTC = 9:00 PM America/New_York during EDT.
+    # Change this cron if you want a different local time.
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+
+jobs:
+  ntfy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send ntfy push to phone and laptop
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          NTFY_SERVER: ${{ vars.NTFY_SERVER }}
+          APP_URL: ${{ secrets.APP_URL }}
+        run: |
+          set -euo pipefail
+          if [ -z "${NTFY_TOPIC:-}" ]; then
+            echo "Add a repository secret named NTFY_TOPIC, then rerun this workflow."
+            exit 1
+          fi
+          if echo "$NTFY_TOPIC" | grep -q '[/?#]'; then
+            echo "NTFY_TOPIC must be a single topic name, not a URL."
+            exit 1
+          fi
+          server="${NTFY_SERVER:-https://ntfy.sh}"
+          server="${server%/}"
+          headers=(-H "Title: Daily mental health log" -H "Tags: memo,bell" -H "Priority: default")
+          if [ -n "${APP_URL:-}" ]; then
+            headers+=(-H "Click: $APP_URL" -H "Actions: view, Open log, $APP_URL, clear=true")
+          fi
+          curl -fsS -o /dev/null "${headers[@]}" \
+            -d "Time to record today's PHQ-9 and GAD-7 scores." \
+            "$server/$NTFY_TOPIC"
+          echo "Reminder sent to $server/$NTFY_TOPIC"
