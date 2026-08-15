@@ -3,12 +3,3 @@ services:
     build: .
     ports:
       - "3000:3000"
-    environment:
-      TZ: ${TZ:-America/New_York}
-      APP_PASSWORD: ${APP_PASSWORD:-}
-      NTFY_TOPIC: ${NTFY_TOPIC:-}
-      NTFY_SERVER: ${NTFY_SERVER:-https://ntfy.sh}
-      APP_URL: ${APP_URL:-http://localhost:3000}
-      DATA_PATH: /app/data/entries.json
-    volumes:
-      - ./data:/app/data

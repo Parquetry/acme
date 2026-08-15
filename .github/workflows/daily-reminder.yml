@@ -28,10 +28,9 @@ jobs:
           fi
           server="${NTFY_SERVER:-https://ntfy.sh}"
           server="${server%/}"
+          app_url="${APP_URL:-https://parquetry.github.io/acme/}"
           headers=(-H "Title: Daily mental health log" -H "Tags: memo,bell" -H "Priority: default")
-          if [ -n "${APP_URL:-}" ]; then
-            headers+=(-H "Click: $APP_URL" -H "Actions: view, Open log, $APP_URL, clear=true")
-          fi
+          headers+=(-H "Click: $app_url" -H "Actions: view, Open log, $app_url, clear=true")
           curl -fsS -o /dev/null "${headers[@]}" \
             -d "Time to record today's PHQ-9 and GAD-7 scores." \
             "$server/$NTFY_TOPIC"
