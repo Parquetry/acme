@@ -1,4 +1,11 @@
-export function todayDate(timeZone = process.env.TZ || "America/New_York"): string {
+function defaultTimeZone(): string | undefined {
+  if (typeof process !== "undefined" && process.env.TZ) {
+    return process.env.TZ;
+  }
+  return undefined;
+}
+
+export function todayDate(timeZone = defaultTimeZone()): string {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone,
     year: "numeric",

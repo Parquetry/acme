@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "tsx --test src/lib/scoring.test.ts src/lib/store.test.ts src/lib/ntfy.test.ts",
+    "test": "tsx --test src/lib/scoring.test.ts src/lib/store.test.ts src/lib/ntfy.test.ts src/lib/entry.test.ts",
     "remind": "tsx scripts/send-reminder.ts",
     "seed": "tsx scripts/seed.ts"
   },

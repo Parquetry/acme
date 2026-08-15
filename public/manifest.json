@@ -1,0 +1,15 @@
+{
+  "name": "Daily mental health log",
+  "short_name": "Daily log",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f3efe4",
+  "theme_color": "#0f6e68",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

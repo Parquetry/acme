@@ -1,55 +1,51 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { GAD7_ITEMS, PHQ9_ITEMS, SCALE_LABELS, type Entry, type MetricItem } from "@/lib/metrics";
+import { useEffect, useMemo, useState } from "react";
+import { getBrowserEntry, upsertBrowserEntry } from "@/lib/browser-store";
+import { GAD7_ITEMS, PHQ9_ITEMS, SCALE_LABELS, type MetricItem } from "@/lib/metrics";
 import { gad7Severity, phq9Severity, sumScores } from "@/lib/scoring";
 
 type LogFormProps = {
   date: string;
   displayDate: string;
-  initial: Entry | null;
 };
 
 const emptyPhq9 = () => Array(PHQ9_ITEMS.length).fill(null) as Array<number | null>;
 const emptyGad7 = () => Array(GAD7_ITEMS.length).fill(null) as Array<number | null>;
 
-export function LogForm({ date, displayDate, initial }: LogFormProps) {
-  const [phq9, setPhq9] = useState<Array<number | null>>(initial?.phq9 ?? emptyPhq9());
-  const [gad7, setGad7] = useState<Array<number | null>>(initial?.gad7 ?? emptyGad7());
-  const [comment, setComment] = useState(initial?.comment ?? "");
-  const [status, setStatus] = useState<string>(initial ? "Loaded today's saved log." : "");
+export function LogForm({ date, displayDate }: LogFormProps) {
+  const [phq9, setPhq9] = useState<Array<number | null>>(emptyPhq9());
+  const [gad7, setGad7] = useState<Array<number | null>>(emptyGad7());
+  const [comment, setComment] = useState("");
+  const [saved, setSaved] = useState(false);
+  const [status, setStatus] = useState("");
   const [error, setError] = useState("");
-  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    const initial = getBrowserEntry(date);
+    if (!initial) return;
+    setPhq9(initial.phq9);
+    setGad7(initial.gad7);
+    setComment(initial.comment);
+    setSaved(true);
+    setStatus("Loaded today's saved log.");
+  }, [date]);
 
   const phqTotal = useMemo(() => (phq9.every(isScore) ? sumScores(phq9) : null), [phq9]);
   const gadTotal = useMemo(() => (gad7.every(isScore) ? sumScores(gad7) : null), [gad7]);
   const selfHarm = typeof phq9[8] === "number" ? phq9[8] : 0;
   const complete = phq9.every(isScore) && gad7.every(isScore);
 
-  async function onSubmit(event: React.FormEvent) {
+  function onSubmit(event: React.FormEvent) {
     event.preventDefault();
     if (!complete) {
       setError("Rate every item from 0 to 3 before saving.");
       return;
     }
-    setSaving(true);
     setError("");
-    try {
-      const response = await fetch("/api/entries", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ date, phq9, gad7, comment }),
-      });
-      const payload = (await response.json()) as { error?: string };
-      if (!response.ok) {
-        throw new Error(payload.error || "Could not save");
-      }
-      setStatus("Saved. You can update this day anytime.");
-    } catch (saveError) {
-      setError(saveError instanceof Error ? saveError.message : "Could not save");
-    } finally {
-      setSaving(false);
-    }
+    upsertBrowserEntry({ date, phq9, gad7, comment });
+    setSaved(true);
+    setStatus("Saved on this phone. Open History to see trends.");
   }
 
   return (
@@ -103,8 +99,8 @@ export function LogForm({ date, displayDate, initial }: LogFormProps) {
           <p className={error ? "crisis" : "hint"} style={{ margin: 0, padding: error ? "8px 12px" : 0, borderRadius: 12 }}>
             {error || status}
           </p>
-          <button className="primary" type="submit" disabled={saving || !complete}>
-            {saving ? "Saving…" : initial ? "Update today" : "Save today"}
+          <button className="primary" type="submit" disabled={!complete}>
+            {saved ? "Update today" : "Save today"}
           </button>
         </div>
       </section>
